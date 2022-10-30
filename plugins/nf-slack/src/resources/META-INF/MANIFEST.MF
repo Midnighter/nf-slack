@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Plugin-Id: nf-slack
+Plugin-Version: 0.1.0a1
+Plugin-Class: nextflow.slack.SlackPlugin
+Plugin-Provider: nextflow
+Plugin-Requires: >=22.10.0

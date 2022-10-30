@@ -1,0 +1,27 @@
+{
+  "template": "/home/moritz/Codebase/Midnighter/cookiecutter-nf-plugin",
+  "commit": "2368a97160bda770f5e0057b76526fbc9bda7985",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "full_name": "Moritz E. Beber",
+      "email": "midnighter@posteo.net",
+      "github_username": "Midnighter",
+      "plugin_name": "Slack Notification Nextflow Plugin",
+      "plugin_slug": "nf-slack",
+      "plugin_package": "slack",
+      "plugin_class_prefix": "Slack",
+      "plugin_short_description": "Create notification messages from nextflow using incoming webhooks for Slack.",
+      "license": "Apache-2.0",
+      "release_date": "2022-10-30",
+      "year": "2022",
+      "version": "0.1.0a1",
+      "_extensions": [
+        "jinja2_time.TimeExtension",
+        "jinja2_strcase.StrcaseExtension"
+      ],
+      "_template": "/home/moritz/Codebase/Midnighter/cookiecutter-nf-plugin"
+    }
+  },
+  "directory": null
+}
