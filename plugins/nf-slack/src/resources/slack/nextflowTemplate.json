@@ -1,0 +1,18 @@
+[
+  {
+    "type": "divider"
+  },
+  {
+    "type": "section",
+    "fields": [
+      {
+        "type": "mrkdwn",
+        "text": "*Nextflow version*"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "${nextflow.version.toString()}, build ${nextflow.build} (${nextflow.timestamp})"
+      }
+    ]
+  }
+]

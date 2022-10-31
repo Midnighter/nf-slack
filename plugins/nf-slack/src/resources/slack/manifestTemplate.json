@@ -1,0 +1,25 @@
+[
+  {
+    "type": "divider"
+  },
+  {
+    "type": "header",
+    "text": {
+      "type": "plain_text",
+      "text": "Manifest"
+    }
+  },
+  {
+    "type": "section",
+    "fields": [
+      {
+        "type": "mrkdwn",
+        "text": "<% out << manifest.keySet().sort().collect { key -> "*${key}*" }.join('\\n') %>"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "<% out << manifest.keySet().sort().collect { key -> manifest[key] ?: '' }.join('\\n') %>"
+      }
+    ]
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "type": "divider"
+  },
+  {
+    "type": "header",
+    "text": {
+      "type": "plain_text",
+      "text": "Extra Information"
+    }
+  },
+  {
+    "type": "section",
+    "fields": [
+      {
+        "type": "mrkdwn",
+        "text": "<% out << extra.keySet().sort().collect { key -> "*${key}*" }.join('\\n') %>"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "<% out << extra.keySet().sort().collect { key -> extra[key] ?: '' }.join('\\n') %>"
+      }
+    ]
+  }
+]

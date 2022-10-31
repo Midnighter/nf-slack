@@ -8,5 +8,5 @@
 build/
 
 # Ignore nextflow directories
-/.nextflow/
+/.nextflow*
 /work/

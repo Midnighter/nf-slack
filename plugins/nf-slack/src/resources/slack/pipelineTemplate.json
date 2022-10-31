@@ -1,0 +1,51 @@
+[
+  {
+    "type": "header",
+    "text": {
+      "type": "plain_text",
+      "text": "${manifest.name ?: '<missing name>'} [${pipeline.runName}]"
+    }
+  },
+  {
+    "type": "section",
+    "fields": [
+      {
+        "type": "mrkdwn",
+        "text": "*Pipeline version*\n*Revision*\n*Commit Hash*"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "${manifest.version ?: ''}\n${pipeline.revision ?: ''}\n```\n${pipeline.commitId ?: ''}\n```"
+      }
+    ]
+  },
+  {
+    "type": "section",
+    "fields": [
+      {
+        "type": "mrkdwn",
+        "text": "*Completed on:*\n${pipeline.complete.format('yyyy-MM-dd HH:mm:ss Z')} (duration: ${pipeline.duration})"
+      },
+      {
+        "type": "mrkdwn",
+        "text": "*Status:*"
+      }
+    ],
+    "accessory": {
+      "type": "button",
+      "text": {
+        "type": "plain_text",
+        "text": "${pipeline.success ? 'Success' : 'Failure'}"
+      },
+      "style": "${pipeline.success ? 'primary' : 'danger'}",
+      "value": "click_status"
+    }
+  },
+  {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": "*Nextflow command:*\n```\n${pipeline.commandLine}\n```"
+    }
+  }
+]

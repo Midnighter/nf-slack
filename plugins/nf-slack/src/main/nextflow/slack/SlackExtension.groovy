@@ -18,6 +18,7 @@ package nextflow.slack
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import nextflow.Session
+import nextflow.plugin.extension.Function
 import nextflow.plugin.extension.PluginExtensionPoint
 
 /**
@@ -45,9 +46,44 @@ class SlackExtension extends PluginExtensionPoint {
      * @param session A nextflow session instance.
      */
     @Override
-    protected void init(final Session session) {
+    protected void init(Session session) {
         this.session = session
-        this.config = new SlackConfig(session.config?.navigate('slack') as Map)
+        try {
+            this.config = new SlackConfig(session)
+        } catch (MalformedURLException | AssertionError exc) {
+            log.error("${exc.getMessage()}")
+            log.error("Aborting.")
+            session.abort(exc)
+        }
+        if (this.config.onStart) {
+            notifySlack()
+        }
+    }
+
+    @Function
+    void notifySlack(final Map extra = null) {
+        SlackSendingService.sendMessage(this.config.notifyURL, makeMessage(extra))
+    }
+
+    @Function
+    void alertSlack(final Map extra = null) {
+        SlackSendingService.sendMessage(this.config.alertURL, makeMessage(extra))
+    }
+
+    protected SlackMessage makeMessage(final Map extra) {
+        final FluentSlackMessageBuilder builder = new FluentSlackMessageBuilder()
+            .summarizePipeline(this.session.workflowMetadata)
+            .addText()
+            .addPipelineInfo()
+            .addNextflowInfo()
+
+        if (this.config.includeManifest) {
+            builder.addManifest()
+        }
+        if (extra) {
+            builder.addExtra(extra)
+        }
+        return builder.getMessage()
     }
 
 }

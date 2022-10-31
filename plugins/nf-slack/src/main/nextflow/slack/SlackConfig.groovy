@@ -17,6 +17,10 @@ package nextflow.slack
 
 import groovy.transform.PackageScope
 import groovy.transform.CompileStatic
+import nextflow.Session
+
+import java.nio.file.Path
+import java.nio.file.Paths
 
 /**
  * Define the plugin configuration values.
@@ -35,17 +39,97 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class SlackConfig {
 
-    String key  // TODO: Replace this example attribute.
+    /**
+     * Whether or not to send a Slack notification on pipeline start.
+     */
+    protected Boolean onStart
 
     /**
-     * Construct a configuration instance.
-     *
-     * @param map A nextflow plugin wrapper instance.
+     * The incoming webhook URL for Slack notifications.
      */
-    SlackConfig(Map map) {
-        final Map config = map ?: [:]
-        // TODO: Replace this example assignment.
-        this.key = config.key ?: 'default value'
+    protected URL notifyURL
+
+    /**
+     * An optional, separate incoming webhook URL for Slack alerts.
+     */
+    protected URL alertURL
+
+    /**
+     * Whether or not to include pipeline manifest information in the message.
+     */
+    protected Boolean includeManifest
+
+    /**
+     * Construct a plugin configuration instance.
+     *
+     * @param map A nextflow configuration instance.
+     */
+    SlackConfig(final Session session) {
+        final Map config = session.config?.navigate('slack') as Map ?: [:]
+        this.onStart = config.on_start ?: false
+        // The `notify_url` is required.
+        this.notifyURL = validateWebhook(config.notify_url as String)
+        if (config.alert_url) {
+            this.alertURL = validateWebhook(config.alert_url as String)
+        } else {
+            this.alertURL = this.notifyURL
+        }
+        this.includeManifest = config.include_manifest ?: false
+    }
+
+    /**
+     * Validate the given webhook URL.
+     *
+     * @param hook An incoming webhook URL for Slack.
+     * @return A validated webhook URL.
+     * @throws MalformedURLException If the webhook URL is malformed.
+     * @throws AssertionError If the URL's protocol is neither HTTP nor HTTPS.
+     */
+    protected static URL validateWebhook(final String hook) {
+        URL url
+        try {
+            url = new URL(hook)
+        } catch (MalformedURLException exc) {
+            throw exc
+        }
+        assert url.protocol ==~ /^https?/, "Only HTTP or HTTPS URLs are supported. Found ${url.protocol}."
+        return url
+    }
+
+    /**
+     * Getter for the onStart conditional.
+     *
+     * @return The onStart condition.
+     */
+    Boolean getOnStart() {
+        return this.onStart
+    }
+
+    /**
+     * Getter for the notification incoming webhook URL for Slack.
+     *
+     * @return The notification webhook URL if any.
+     */
+    URL getNotifyURL() {
+        return this.notifyURL
+    }
+
+    /**
+     * Getter for the alerting incoming webhook URL for Slack.
+     *
+     * @return The alerting webhook URL if any.
+     */
+    URL getAlertURL() {
+        return this.alertURL
+    }
+
+    /**
+     * Getter for the includeManifest conditional.
+     *
+     * @return The includeManifest condition.
+     */
+    Boolean getIncludeManifest() {
+        return this.includeManifest
     }
 
 }

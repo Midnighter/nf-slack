@@ -1,0 +1,1 @@
+${manifest.name ?: '<missing name>'} ${manifest.version ?: '<missing version>'} [${pipeline.runName}] ${pipeline.success ? 'completed successfully' : 'failed'}.
