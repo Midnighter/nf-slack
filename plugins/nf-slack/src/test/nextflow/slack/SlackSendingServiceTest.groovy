@@ -20,13 +20,18 @@ import spock.lang.Specification
 
 class SlackSendingServiceTest extends Specification {
 
-    def 'Sending a message should fail on server error'() {
-        given:
+    def setup() {
         SlackSendingService.backoffRate = 1
         SlackSendingService.initialWait = TimeValue.ofMilliseconds(200)
         SlackSendingService.maxWait = TimeValue.ofSeconds(1)
         SlackSendingService.maxTries = 2
+    }
 
+    def cleanup() {
+        SlackSendingService.setDefaultConfig()
+    }
+
+    def 'Sending a message should fail on server error'() {
         when:
         SlackSendingService.sendMessage('https://httpbin.org/status/500'.toURL(), new SlackMessage())
 
@@ -37,12 +42,6 @@ class SlackSendingServiceTest extends Specification {
     }
 
     def 'Sending a message should fail on user error'() {
-        given:
-        SlackSendingService.backoffRate = 1
-        SlackSendingService.initialWait = TimeValue.ofMilliseconds(200)
-        SlackSendingService.maxWait = TimeValue.ofSeconds(1)
-        SlackSendingService.maxTries = 2
-
         when:
         SlackSendingService.sendMessage('https://httpbin.org/status/400'.toURL(), new SlackMessage())
 
@@ -53,12 +52,6 @@ class SlackSendingServiceTest extends Specification {
     }
 
     def 'Sending a message can succeed'() {
-        given:
-        SlackSendingService.backoffRate = 1
-        SlackSendingService.initialWait = TimeValue.ofMilliseconds(200)
-        SlackSendingService.maxWait = TimeValue.ofSeconds(1)
-        SlackSendingService.maxTries = 2
-
         when:
         SlackSendingService.sendMessage('https://httpbin.org/status/200'.toURL(), new SlackMessage())
 

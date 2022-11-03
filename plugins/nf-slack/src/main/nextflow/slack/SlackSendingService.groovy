@@ -45,6 +45,13 @@ class SlackSendingService {
     static TimeValue maxWait = TimeValue.ofSeconds(30)
     static Integer maxTries = 5
 
+    static void setDefaultConfig() {
+        backoffRate = 2
+        initialWait = TimeValue.ofSeconds(1)
+        maxWait = TimeValue.ofSeconds(30)
+        maxTries = 5
+    }
+
     static void sendMessage(final URL hook, final SlackMessage message) {
         final StringEntity body = new StringEntity(
             message.toJson(), ContentType.APPLICATION_JSON)
