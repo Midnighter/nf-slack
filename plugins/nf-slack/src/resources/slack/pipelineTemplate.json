@@ -24,7 +24,7 @@
     "fields": [
       {
         "type": "mrkdwn",
-        "text": "*Completed on:*\n${pipeline.complete.format('yyyy-MM-dd HH:mm:ss Z')} (duration: ${pipeline.duration})"
+        "text": "*Completed on:*\n${pipeline.complete?.format('yyyy-MM-dd HH:mm:ss Z')} (duration: ${pipeline.duration})"
       },
       {
         "type": "mrkdwn",
