@@ -71,12 +71,14 @@ class SlackSendingService {
 
     protected static CloseableHttpClient makeClient() {
         return CachingHttpClientBuilder
-            .create().setCacheConfig(CacheConfig.DEFAULT)
+            .create()
+            .setCacheConfig(CacheConfig.DEFAULT)
             .setSchedulingStrategy(
                 new ExponentialBackOffSchedulingStrategy(
                     backoffRate, initialWait, maxWait
                 )
             )
+            .setUserAgent("nf-slack ${SlackSendingService.class.getPackage().implementationVersion}")
             .build()
     }
 
